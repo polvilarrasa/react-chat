@@ -1,4 +1,4 @@
-import { LoginFirebaseRepository } from "repository/LoginFirebaseRepository/LoginFirebaseRepository";
+import { LoginFirebaseRepository } from "../../repository/login/LoginFirebaseRepository";
 import { User } from "./User";
 
 export class LoginService {

@@ -5,7 +5,13 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+    /*"paths":{
+      "@pages/*": ["src/pages/*"],
+      "@service/*":["src/service/*"],
+      "@repository":["src/repository/*"],
+      "@_components":["src/components/*"],
+      "@fireconfig":["src/firebase/*"]
+    },*/
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -20,6 +26,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "firebase.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,19 +1,32 @@
+import { useNavigate } from 'react-router-dom';
 import { LoginFirebaseService } from '../service/login/LoginFirebaseService'
+import { User } from '../service/login/User';
+import React from 'react';
+import { LoginService } from '../serviceconfig';
 
 function Login() {
+  
+  const navigate= useNavigate();
 
-  function login(){
+  React.useEffect(()=>{
+    if(LoginService.isLogged())
+      navigate("/chat")
+  },[])
+
+  function lg(){
     const log = new LoginFirebaseService();
+    
 
-    log.login().then((user)=>{
-      console.log("User is logged")
+    log.login().then((user:User)=>{
+      console.log("User is logged",user)
+      navigate("/chat")
     }).catch((e)=>{
       console.log("Error authorising",{e})
     })
   }
 
   return (
-    <button onClick={()=>login()}>
+    <button onClick={()=>lg()}>
       patata
       </button>
   )

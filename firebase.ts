@@ -1,4 +1,6 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -12,9 +14,14 @@ const firebaseConfig = {
   };
 
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
+
+// Autentication
+const firebaseAuth = getAuth();
+firebaseAuth.useDeviceLanguage();
+const googleAuthProvider = new GoogleAuthProvider();
 
 export {
   firebaseApp,
-  analytics
+  firebaseAuth,
+  googleAuthProvider
 }

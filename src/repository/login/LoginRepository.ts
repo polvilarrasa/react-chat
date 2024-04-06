@@ -1,4 +1,5 @@
-import { User } from "service/login/User";
+import { User } from "@service/login/User";
+import { LoginFirebaseRepository } from "@repository/LoginFirebaseRepository";
 
 export interface LoginRepository{
     register():Promise<User>;
