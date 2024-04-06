@@ -1,8 +1,21 @@
-import React from 'react'
+import { LoginFirebaseService } from '../service/login/LoginFirebaseService'
 
 function Login() {
+
+  function login(){
+    const log = new LoginFirebaseService();
+
+    log.login().then((user)=>{
+      console.log("User is logged")
+    }).catch((e)=>{
+      console.log("Error authorising",{e})
+    })
+  }
+
   return (
-    <div>Login</div>
+    <button onClick={()=>login()}>
+      patata
+      </button>
   )
 }
 
