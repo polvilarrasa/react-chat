@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { LoginFirebaseService } from '../service/login/LoginFirebaseService'
 import { User } from '../service/user/User';
 import { LoginService } from '../serviceconfig';
 
@@ -13,11 +12,12 @@ function Login() {
       navigate("/chat")
     }).catch((e:Error)=>{
       console.log("Error authorising",{e})
+      console.log(e.message)
     })
   }
 
   return (
-    <button onClick={()=>lg()}>
+    <button className="login-button" onClick={()=>lg()}>
       patata
       </button>
   )

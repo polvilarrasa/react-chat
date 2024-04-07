@@ -20,6 +20,7 @@ export class LoginFirebaseService extends LoginService{
                 if(!exist){
                      return this.userService.createUser();
                 }
+                return exist
            })
       }).then(userCreated=>{
            if(!userCreated){

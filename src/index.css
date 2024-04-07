@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.login-button{
+    align-self: center;
+    margin-top: 20px;
+    justify-content: center;
+    padding: 10px 20px;
+    height: 40px;
+    width: 200px;
+    border-radius: 20px;
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+}

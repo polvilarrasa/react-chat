@@ -1,14 +1,19 @@
 import { firebaseAuth, firebaseDb } from "../../../firebase";
-import { Collection, UserCollection } from "../../firebase/firedbconfig";
+import { Collection } from "../../firebase/firedbconfig";
 import { User } from "../../service/user/User";
 import { LoginService } from "../../serviceconfig";
 import { UserRepository } from "./UserRepository";
-import { addDoc, collection,getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 
 export class UserFirebaseRepository implements UserRepository{
     getUid(): Promise<string>{
-        return this.getUser().then(user=>user.id);
+        const userId = firebaseAuth.currentUser?.uid;
+        if (userId) {
+            return Promise.resolve(userId);
+        } else {
+            return Promise.reject("User not logged in");
+        }
     }
     getEmail(): Promise<string> {
             return this.getUser().then(user=>user.email)
@@ -20,40 +25,54 @@ export class UserFirebaseRepository implements UserRepository{
      */
     getUser(): Promise<User> {
         return this.getUid().then(uid=>{
-            const document = collection(firebaseDb, Collection.USER)
-            const q = query(document,where(UserCollection.UID,"==",uid));
+            const collectionRef = collection(firebaseDb, Collection.USER);
+            const docRef = doc(collectionRef,uid)
 
-            return getDocs(q).then(user=>{
-                if(user.empty){
+            return getDoc(docRef).then(user=>{
+                if(!user.exists()){
+                    LoginService.logout();
                     throw new Error("User not found");
-                    LoginService.logout()
                 }
+                const dt = user.data();
 
-                const usr = user.docs[0].data();
-                
+                console.log("data getUser",dt)
+
                 return {
-                    id:usr.id,
-                    name:usr.name,
-                    email:usr.email,
-                    contacts:usr.contacts,
-                    invitations:usr.invitations
+                    id:user.id,
+                    name:dt.name,
+                    email:dt.email,
+                    contacts:dt.contacts,
+                    invitations:dt.invitations
                 } as User
+
             })
         })
     }
 
     userExist(user:User): Promise<boolean> {
-        return getDocs(collection(firebaseDb, user.id))
-                .then((query)=> !query.empty)
+        const document = collection(firebaseDb, Collection.USER);
+
+        const docRef = doc(document, user.id)
+
+        return getDoc(docRef).then(res=>{
+            return res.exists();
+        })
     }
 
     createUser(): Promise<boolean>{
-        return addDoc(collection(firebaseDb, "user"), {
-            uid: firebaseAuth.currentUser?.uid,
+        const collectionRef = collection(firebaseDb, "user");
+
+        const docRef = doc(collectionRef,firebaseAuth.currentUser?.uid??"")
+
+        return setDoc(docRef,{
             name: firebaseAuth.currentUser?.displayName, 
-            contact: undefined,
-            invitation:undefined
-          }).then(docCreated=>docCreated.id!==undefined);
+            contact: [],
+            invitation:[]
+          }).then(()=>{
+                return true;
+            }).catch(()=>{
+                return false;
+            } )
     }
 
 }
