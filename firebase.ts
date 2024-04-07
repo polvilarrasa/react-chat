@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -20,8 +20,12 @@ const firebaseAuth = getAuth();
 firebaseAuth.useDeviceLanguage();
 const googleAuthProvider = new GoogleAuthProvider();
 
+// Firestore database
+const firebaseDb = getFirestore(firebaseApp)
+
 export {
   firebaseApp,
   firebaseAuth,
-  googleAuthProvider
+  googleAuthProvider,
+  firebaseDb
 }

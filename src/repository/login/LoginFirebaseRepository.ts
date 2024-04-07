@@ -1,5 +1,5 @@
 import { firebaseAuth, googleAuthProvider } from "../../../firebase"
-import { User } from "../../service/login/User"
+import { User } from "../../service/user/User"
 import { LoginRepository } from "./LoginRepository"
 import { getAuth, signInWithPopup, signOut } from "firebase/auth"
 
@@ -11,24 +11,26 @@ export class LoginFirebaseRepository implements LoginRepository{
      login(): Promise<User> { 
           return signInWithPopup(firebaseAuth, googleAuthProvider)
                .then((result) => {
-
-                    if(!result){
+                    if(!result.user){
                          throw new Error("Error Authenticating")
                     }
-
-               return {
-                    username:result.user.displayName??"",
-                    token: result.user.refreshToken
-               }
+                    
+                    return {
+                         id: result.user.uid,
+                         name: result.user.displayName??"",
+                         email:result.user.email??"",
+                         contacts:undefined,
+                         invitations: undefined
+                    }
                })
      }
 
-     logout(): void {
-          signOut(firebaseAuth)
+     logout(): Promise<void> {
+          return Promise.resolve(signOut(firebaseAuth))
      }
 
-     isLogged(): boolean {
-          return getAuth().currentUser!==undefined
-               &&getAuth().currentUser!==null;
+     isLogged(): Promise<boolean> {
+          const logged =  getAuth().currentUser!==undefined&&getAuth().currentUser!==null
+          return Promise.resolve(logged)
      }
 }

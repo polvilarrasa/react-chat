@@ -1,9 +1,10 @@
 import { LoginFirebaseRepository } from "../../repository/login/LoginFirebaseRepository";
-import { User } from "./User";
+import { LoginRepository } from "../../repository/login/LoginRepository";
+import { User } from "../user/User";
 
 export class LoginService {
 
-    repository:LoginFirebaseRepository;
+    repository:LoginRepository;
 
     constructor(repo:LoginFirebaseRepository){
         this.repository = repo;
@@ -16,7 +17,11 @@ export class LoginService {
         return this.repository.login();
     }
 
-    isLogged():boolean{
+    logout():Promise<void>{
+        return this.repository.logout();
+    }
+
+    isLogged():Promise<boolean>{
         return this.repository.isLogged();
     }
 }

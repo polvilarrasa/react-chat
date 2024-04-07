@@ -1,9 +1,8 @@
-import { User } from "@service/login/User";
-import { LoginFirebaseRepository } from "@repository/LoginFirebaseRepository";
+import { User } from "../../service/user/User";
 
 export interface LoginRepository{
     register():Promise<User>;
     login():Promise<User>;
-    logout():void;
-    isLogged():boolean;
+    logout():Promise<void>;
+    isLogged():Promise<boolean>;
 }
