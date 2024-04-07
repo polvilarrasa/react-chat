@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   BrowserRouter,
+  createBrowserRouter,
   Navigate,
   RouterProvider,
 } from "react-router-dom";
@@ -32,7 +33,7 @@ const routes = [
   }
 ];
 
-const router = BrowserRouter(routes)
+const router = createBrowserRouter(routes)
 
 
 
